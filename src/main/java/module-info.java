@@ -3,6 +3,6 @@ module com.example.globetrotter {
     requires javafx.fxml;
     requires javafx.graphics;
 
-    opens com.example.globetrotter.main to javafx.graphics, javafx.fxml;
+    opens com.example.globetrotter.main to javafx.graphics, javafx.fxml, javafx.controls;
     exports com.example.globetrotter.main;
 }

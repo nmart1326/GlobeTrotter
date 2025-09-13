@@ -7,9 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-public class globeTrottersApp extends Application {
+public class globeTrotterApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {

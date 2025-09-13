@@ -1,4 +1,4 @@
-package org.example.gy;
+package com.example.globetrotter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

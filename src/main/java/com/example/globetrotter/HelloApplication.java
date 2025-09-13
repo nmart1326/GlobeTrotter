@@ -1,4 +1,4 @@
-package org.example.gy;
+package com.example.globetrotter;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

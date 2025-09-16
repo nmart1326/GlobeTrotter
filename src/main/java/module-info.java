@@ -1,9 +1,9 @@
-module org.example.gy {
+module com.example.globetrotter {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
     requires java.sql;
 
-
-    opens org.example.gy to javafx.fxml;
-    exports org.example.gy;
+    opens com.example.globetrotter.main to javafx.graphics, javafx.fxml, javafx.controls;
+    exports com.example.globetrotter.main;
 }

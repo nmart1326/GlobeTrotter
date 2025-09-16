@@ -1,4 +1,4 @@
-package org.example.gy;
+package com.example.globetrotter.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package org.example.gy;
+package com.example.globetrotter.model;
 
 public class User {
     // User table fields

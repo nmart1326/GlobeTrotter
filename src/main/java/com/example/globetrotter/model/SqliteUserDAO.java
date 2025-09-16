@@ -1,4 +1,6 @@
-package org.example.gy;
+package com.example.globetrotter.model;
+
+import com.example.globetrotter.util.SqliteConnection;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SqliteUserDAO implements IUserDAO{
+public class SqliteUserDAO implements IUserDAO {
     private Connection connection;
 
     public SqliteUserDAO() {

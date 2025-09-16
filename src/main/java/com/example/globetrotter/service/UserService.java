@@ -1,4 +1,11 @@
-package org.example.gy;
+package com.example.globetrotter.service;
+
+import com.example.globetrotter.model.IUserDAO;
+import com.example.globetrotter.model.MockUserDAO;
+import com.example.globetrotter.model.SqliteUserDAO;
+import com.example.globetrotter.model.User;
+import com.example.globetrotter.util.AuthenticationException;
+import com.example.globetrotter.util.UserValidationException;
 
 import java.util.List;
 import java.util.regex.Pattern;

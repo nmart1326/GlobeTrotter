@@ -6,8 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
+import com.example.globetrotter.view.Map;
 public class globeTrotterApp extends Application {
+
+    private Map mapView;
 
     @Override
     public void start(Stage primaryStage) {
@@ -19,19 +21,30 @@ public class globeTrotterApp extends Application {
             System.err.println("Failed to load application icon: " + e.getMessage());
         }
 
-        Label welcomeLabel = new Label("Globetrotter v0.1.0");
+        // Initialize the map from com/example/globetrotter/view/Map.java
+        mapView = new Map();
 
+        // Welcome label
+        Label versionLabel = new Label("Globetrotter v0.1.0");
+
+        // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel, LoginScreen}
         StackPane root = new StackPane();
-        root.getChildren().add(welcomeLabel);
-
+        root.getChildren().addAll(versionLabel, mapView.getMapView());
 
         Scene scene = new Scene(root, 1000, 750);
 
-        primaryStage.setTitle("Globetrotters");  //Sets title of the primary stage
+        // Window Label
+        primaryStage.setTitle("Globetrotter");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-        primaryStage.setScene(scene);  //Sets scene on the primary stage
-
-        primaryStage.show();  //Shows stage to user
+    @Override
+    public void stop() {
+        // Clean up Map Resources
+        if (mapView != null) {
+            mapView.dispose();
+        }
     }
 
     public static void main(String[] args) {

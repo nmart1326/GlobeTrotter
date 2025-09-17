@@ -33,7 +33,7 @@ public class MainController {
             buttonTransition.setToX(SPWidth - 25);
             isSidePanelHidden = false;
             sidePanel.getSidePanel().setMouseTransparent(false);
-            toggleImageView.setImage(ToggleButtonFactory.createIcon("chevronRight.png"));
+            toggleImageView.setImage(ToggleButtonFactory.createIcon("chevronLeft.png"));
         } else {
             panelTransition.setToX(-SPWidth - 10);
             buttonTransition.setToX(20);

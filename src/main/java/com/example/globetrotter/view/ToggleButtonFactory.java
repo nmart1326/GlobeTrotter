@@ -12,7 +12,7 @@ public class ToggleButtonFactory {
     public static Button createButton() {
         Button button = new Button();
         try {
-            Image icon = new Image(ToggleButtonFactory.class.getResourceAsStream("/assets.icons/chevronRight.png"));
+            Image icon = new Image(ToggleButtonFactory.class.getResourceAsStream("/assets.icons/chevronLeft.png"));
             ImageView toggleImageView = new ImageView(icon);
 
             toggleImageView.setFitWidth(20);

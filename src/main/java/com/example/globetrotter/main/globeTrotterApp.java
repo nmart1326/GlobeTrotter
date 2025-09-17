@@ -52,6 +52,7 @@ public class globeTrotterApp extends Application {
         startQuizBtn.setOnAction(e -> {
             var controller = new QuizController(new QuizService());
             var quizView   = new QuizView(controller);
+            quizView.setOnBack(() -> root.getChildren().remove(quizView));
             root.getChildren().add(quizView);
         });
 

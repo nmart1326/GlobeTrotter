@@ -1,20 +1,22 @@
 package com.example.globetrotter.main;
 
 import com.example.globetrotter.controller.MainController;
+import com.example.globetrotter.controller.QuizController;
+import com.example.globetrotter.service.QuizService;
+import com.example.globetrotter.view.Map;
+import com.example.globetrotter.view.QuizView;
 import com.example.globetrotter.view.SidePanel;
+import com.example.globetrotter.view.ToggleButtonFactory;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import com.example.globetrotter.view.Map;
-import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
-import com.example.globetrotter.view.ToggleButtonFactory;
-import javafx.scene.control.Button;
 
 public class globeTrotterApp extends Application {
 
@@ -58,6 +60,26 @@ public class globeTrotterApp extends Application {
         Scene scene = new Scene(root, 1500, 750);
         //Load Fonts
         scene.getStylesheets().add(getClass().getResource("/com/example/globetrotter/styles.css").toExternalForm());
+
+        // Quiz Button
+        Button startQuizBtn = new Button("Start Quiz");
+        HBox topRight = new HBox(startQuizBtn);
+        topRight.setAlignment(Pos.TOP_RIGHT);
+        topRight.setPadding(new Insets(10));
+
+        root.getChildren().add(topRight);
+        StackPane.setAlignment(topRight, Pos.TOP_RIGHT);
+
+        startQuizBtn.setOnAction(e -> {
+            var controller = new QuizController(new QuizService());
+            var quizView   = new QuizView(controller);
+            quizView.setOnBack(() -> root.getChildren().remove(quizView));
+            root.getChildren().add(quizView);
+        });
+
+        // Ensure map is still clickable
+        versionLabel.setMouseTransparent(true);
+        topRight.setPickOnBounds(false);
 
 
         // Window Label

@@ -1,12 +1,21 @@
 package com.example.globetrotter.main;
 
+import com.example.globetrotter.view.Map;
+import com.example.globetrotter.view.QuizView;
+import com.example.globetrotter.controller.QuizController;
+import com.example.globetrotter.service.QuizService;
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import com.example.globetrotter.view.Map;
+
 public class globeTrotterApp extends Application {
 
     private Map mapView;
@@ -30,6 +39,25 @@ public class globeTrotterApp extends Application {
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel, LoginScreen}
         StackPane root = new StackPane();
         root.getChildren().addAll(versionLabel, mapView.getMapView());
+
+        // Quiz Button
+        Button startQuizBtn = new Button("Start Quiz");
+        HBox topRight = new HBox(startQuizBtn);
+        topRight.setAlignment(Pos.TOP_RIGHT);
+        topRight.setPadding(new Insets(10));
+
+        root.getChildren().add(topRight);
+        StackPane.setAlignment(topRight, Pos.TOP_RIGHT);
+
+        startQuizBtn.setOnAction(e -> {
+            var controller = new QuizController(new QuizService());
+            var quizView   = new QuizView(controller);
+            root.getChildren().add(quizView);
+        });
+
+        // Ensure map is still clickable
+        versionLabel.setMouseTransparent(true);
+        topRight.setPickOnBounds(false);
 
         Scene scene = new Scene(root, 1000, 750);
 

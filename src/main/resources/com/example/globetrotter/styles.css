@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'Lobster Two';
+    src: url('LobsterTwoItalic.ttf');
+}
+
+/* Define style class for the title */
+#app-title {
+    -fx-font-family: 'Lobster Two';
+    -fx-font-size: 40px;
+    -fx-text-fill: #ffffff;
+}
+
+.button{
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size:19px;
+    -fx-padding: 10 15;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #cccccc;
+    -fx-border-style: solid;
+    -fx-alignment: CENTER;
+    -fx-max-width: 200;
+}
+
+.button:hover{
+    -fx-background-color: #e0e0e0;
+    -fx-cursor: hand;
+}
+
+.vbox > .button:last-of-type{
+    -fx-border-width: 0;
+}

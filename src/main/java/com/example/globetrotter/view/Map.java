@@ -10,7 +10,7 @@ public class Map {
     public Map() {
         mapView = new MapView();
         mapView.setZoom(4.5);
-        mapView.setCenter(new MapPoint(-26,133.7751));
+        mapView.setCenter(new MapPoint(-26,119.7751));
     }
 
     public MapView getMapView() {

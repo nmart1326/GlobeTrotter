@@ -1,6 +1,6 @@
-import org.example.gy.SqliteConnection;
-import org.example.gy.SqliteUserDAO;
-import org.example.gy.User;
+import com.example.globetrotter.util.SqliteConnection;
+import com.example.globetrotter.model.SqliteUserDAO;
+import com.example.globetrotter.model.User;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Connection;

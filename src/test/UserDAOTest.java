@@ -1,5 +1,5 @@
-import org.example.gy.MockUserDAO;
-import org.example.gy.User;
+import com.example.globetrotter.model.MockUserDAO;
+import com.example.globetrotter.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;

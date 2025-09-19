@@ -11,6 +11,7 @@ import javafx.scene.Group;
 public class Map {
 
     private final MapView mapView;
+    private final Group mapGroup;
 
     public Map() {
         // Noyal's ArcGIS API key

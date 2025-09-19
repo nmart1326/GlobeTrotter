@@ -10,9 +10,9 @@ import javafx.scene.Group;
 
 public class Map {
 
+    private final MapView mapView;
+
     public Map() {
-        final MapView mapView;
-        final Group mapGroup;
         // Noyal's ArcGIS API key
         ArcGISRuntimeEnvironment.setApiKey("AAPTxy8BH1VEsoebNVZXo8HurLGGQvr8xBwq6kPfaUltn5Urn8soXY7wCLc6ItJlSkpO2jjWWTpz_ASP5gh3d8UVYeEiEiLAO5bfczYpWOgNAGAPvGUMihYXc7lXi31xsF7bisJpnqQPJxNMDaL39mgBH3sjZ7H_GtdQBX-QoI2R-fva9mcg12eEb7GpAXAMtgm9GANyLvfMGLUIVRMvL6aSMwcm9iewwu7cS8jR2eX2PUM.AT1_uYmxm5nK");
 

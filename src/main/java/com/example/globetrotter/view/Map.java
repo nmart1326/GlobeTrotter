@@ -11,7 +11,6 @@ import javafx.scene.Group;
 public class Map {
 
     private final MapView mapView;
-    private final Group mapGroup;
 
     public Map() {
         // Noyal's ArcGIS API key
@@ -34,7 +33,7 @@ public class Map {
         mapView.setViewpoint(new Viewpoint(latitude, longitude, scale));
 
         // Wrap MapView in a Group for potential transformations
-        mapGroup = new Group(mapView);
+        Group mapGroup = new Group(mapView);
 
         // Zoom factor for the MapView node itself
         double zoomFactor = 1.2;

@@ -3,12 +3,10 @@ package com.example.globetrotter.view;
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Viewpoint;
-import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.portal.Portal;
 import com.esri.arcgisruntime.portal.PortalItem;
 import javafx.scene.Group;
-import javafx.scene.layout.StackPane;
 
 public class Map {
 
@@ -45,10 +43,6 @@ public class Map {
 
         // Automatically resize
         mapView.setManaged(true);
-    }
-
-    public Group getMapGroup() {
-        return mapGroup;
     }
 
     public MapView getMapView() {

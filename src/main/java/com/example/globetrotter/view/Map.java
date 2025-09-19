@@ -6,7 +6,6 @@ import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.portal.Portal;
 import com.esri.arcgisruntime.portal.PortalItem;
-import javafx.scene.Group;
 
 public class Map {
 
@@ -32,8 +31,6 @@ public class Map {
         double scale = 31500000; // smaller = zoom in, bigger = zoom out
         mapView.setViewpoint(new Viewpoint(latitude, longitude, scale));
 
-        // Wrap MapView in a Group for potential transformations
-        //Group mapGroup = new Group(mapView);
 
         // Zoom factor for the MapView node itself
         double zoomFactor = 1.2;

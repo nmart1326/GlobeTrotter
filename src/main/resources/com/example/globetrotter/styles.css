@@ -9,6 +9,11 @@
     -fx-font-size: 40px;
     -fx-text-fill: #ffffff;
 }
+#app-title-dark {
+    -fx-font-family: 'Lobster Two';
+    -fx-font-size: 40px;
+    -fx-text-fill: #000000;
+}
 
 .button{
     -fx-background-color: transparent;

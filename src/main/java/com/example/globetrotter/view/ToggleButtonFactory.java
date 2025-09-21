@@ -1,26 +1,22 @@
 package com.example.globetrotter.view;
 
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
+
 
 
 public class ToggleButtonFactory {
 
     public static Button createButton() {
         Button button = new Button();
-        try {
-            Image icon = new Image(ToggleButtonFactory.class.getResourceAsStream("/assets.icons/chevronLeft.png"));
-            ImageView toggleImageView = new ImageView(icon);
 
-            toggleImageView.setFitWidth(20);
-            toggleImageView.setFitHeight(20);
-            button.setGraphic(toggleImageView);
-        } catch (Exception e) {
-            System.err.println("Failed to load application icon: " + e.getMessage());
-        }
+        Image icon = new Image(ToggleButtonFactory.class.getResourceAsStream("/assets/icons/chevronLeft.png"));
+        ImageView toggleImageView = new ImageView(icon);
+
+        toggleImageView.setFitWidth(20);
+        toggleImageView.setFitHeight(20);
+        button.setGraphic(toggleImageView);
 
         button.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
                 " -fx-font-weight: bold; -fx-font-size: 16px;" +
@@ -31,7 +27,7 @@ public class ToggleButtonFactory {
         return button;
     }
     public static Image createIcon(String iconName){
-        return new Image(ToggleButtonFactory.class.getResourceAsStream("/assets.icons/"+iconName));
+        return new Image(ToggleButtonFactory.class.getResourceAsStream("/assets/icons/"+iconName));
     }
 
     public static ImageView createButtonIcon(String iconPath){

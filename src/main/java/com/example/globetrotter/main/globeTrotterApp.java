@@ -18,6 +18,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import java.nio.file.Path;
+import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 
 public class globeTrotterApp extends Application {
 
@@ -30,6 +32,9 @@ public class globeTrotterApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Path installDir = Path.of("target", "arcgisruntime").toAbsolutePath();
+        ArcGISRuntimeEnvironment.setInstallDirectory(installDir.toString());
+
         // Loads icon on the title bar of the window, and taskbar
         try{
             Image icon = new Image(getClass().getResourceAsStream("/assets/icons/globetrotter.png"));

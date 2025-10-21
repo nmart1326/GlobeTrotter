@@ -25,11 +25,31 @@ public class MainController {
         this.root = root;
         this.toggleButton.setOnAction(e -> toggleSidePanel());
         sidePanel.getSignOutButton().setOnAction(e -> handleSignOut());
+
+        for (javafx.scene.Node node : sidePanel.getPanelChildren()) {
+            if (node instanceof Button b && "Quiz".equals(b.getText())) {
+                b.setOnAction(e -> openQuizView());
+            }
+        }
+
+
     }
 
     private void handleSignOut() {
         LoginView loginView = new LoginView();
-        root.getChildren().add(loginView);
+        root.getChildren().setAll(loginView);
+
+    }
+
+    private void openQuizView() {
+        com.example.globetrotter.controller.QuizController quizController =
+                new com.example.globetrotter.controller.QuizController(
+                        new com.example.globetrotter.service.QuizService());
+        com.example.globetrotter.view.QuizView quizView =
+                new com.example.globetrotter.view.QuizView(quizController);
+
+        // Allow ESC or X (Handled in QuizView.java - Button Close & ESC Closes the quiz)
+        root.getChildren().add(quizView);
 
     }
 

@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.input.KeyCode; // Fraser - for escape button
 
 public class QuizView extends StackPane {
 
@@ -25,6 +26,16 @@ public class QuizView extends StackPane {
         StackPane.setAlignment(topBar, Pos.TOP_LEFT);
         StackPane.setMargin(topBar, new Insets(12));
         getChildren().add(topBar);
+
+        //Close Button for Quiz
+        Button close = new Button("X");
+        close.setStyle("-fx-font-weight: bold; -fx-background-color: transparent; -fx-text-fill: #333;");
+        close.setOnAction(e -> ((StackPane) getParent()).getChildren().remove(this));
+
+        HBox.setHgrow(close, Priority.ALWAYS);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        topBar.getChildren().addAll(spacer, close);
 
         // rectangle background
         StackPane card = new StackPane();
@@ -73,9 +84,30 @@ public class QuizView extends StackPane {
         content.getChildren().addAll(question, grid, bottomBar);
         card.getChildren().add(content);
 
+        // Fraser - close button INSIDE card (so it’s part of the quiz window)
+        StackPane.setAlignment(close, Pos.TOP_RIGHT);
+        StackPane.setMargin(close, new Insets(10, 14, 0, 0));
+        card.getChildren().add(close);
+
+
+
         setAlignment(Pos.CENTER);
         getChildren().add(card);
         setPadding(new Insets(20));
+
+        // ESC Button Function for Quiz
+        setFocusTraversable(true);
+        setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                ((StackPane) getParent()).getChildren().remove(this);
+            }
+        });
+        sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                requestFocus();
+            }
+        });
+
     }
 
     private ToggleButton option(String text, ToggleGroup group) {

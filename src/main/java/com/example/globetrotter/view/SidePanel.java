@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SidePanel {
@@ -50,6 +52,11 @@ public class SidePanel {
             }
         }
         return null;
+    }
+
+    // Fraser - Added helper method to expose panel children safely
+    public List<javafx.scene.Node> getPanelChildren() {
+        return new ArrayList<>(sideNavContent.getChildren());
     }
 
 }

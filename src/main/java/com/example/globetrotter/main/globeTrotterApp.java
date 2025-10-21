@@ -63,7 +63,7 @@ public class globeTrotterApp extends Application {
         toggleButton.setTranslateX(SPWidth - 25);
         toggleButton.setTranslateY(70);
 
-        new MainController(sidePanel, toggleButton, "home.png");
+        new MainController(sidePanel, toggleButton, "home.png", root);
 
 
         Scene scene = new Scene(root, 1280, 720);

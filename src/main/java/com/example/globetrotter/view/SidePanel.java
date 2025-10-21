@@ -42,5 +42,14 @@ public class SidePanel {
         return panel;
     }
 
+    public Button getSignOutButton() {
+        VBox panel = sideNavContent;
+        for (javafx.scene.Node node : panel.getChildren()) {
+            if (node instanceof Button b && "Sign Out".equals(b.getText())) {
+                return b;
+            }
+        }
+        return null;
+    }
 
 }

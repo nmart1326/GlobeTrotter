@@ -6,20 +6,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Toggle;
 import javafx.util.Duration;
 import com.example.globetrotter.view.ToggleButtonFactory;
+import javafx.scene.layout.StackPane;
+import com.example.globetrotter.view.LoginView;
 
 public class MainController {
 
     private SidePanel sidePanel;
     private Button toggleButton;
+    private final StackPane root;
     private boolean isSidePanelHidden = false;
     private final int SPWidth = 400; // Match the width of the side panel
     private final String stowedIconPath;
 
-    public MainController(SidePanel sidePanel, Button toggleButton, String stowedIconPath) {
+    public MainController(SidePanel sidePanel, Button toggleButton, String stowedIconPath, StackPane root) {
         this.sidePanel = sidePanel;
         this.toggleButton = toggleButton;
         this.stowedIconPath = stowedIconPath;
+        this.root = root;
         this.toggleButton.setOnAction(e -> toggleSidePanel());
+        sidePanel.getSignOutButton().setOnAction(e -> handleSignOut());
+    }
+
+    private void handleSignOut() {
+        LoginView loginView = new LoginView();
+        root.getChildren().add(loginView);
+
     }
 
     private void toggleSidePanel() {

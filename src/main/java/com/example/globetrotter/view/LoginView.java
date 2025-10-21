@@ -184,7 +184,7 @@ public class LoginView extends StackPane {
 
 // reuse your existing fields
         TextField usernameFieldLogin = new TextField();
-        usernameFieldLogin.setPromptText("Username");
+        usernameFieldLogin.setPromptText("Username or Email");
 
         PasswordField passwordFieldLogin = new PasswordField();
         passwordFieldLogin.setPromptText("Password");
@@ -244,6 +244,7 @@ public class LoginView extends StackPane {
                 else if (teacherBtn.getStyle().equals(selectedStyle)) userType = "Teacher";
 
                 // Read input fields
+                String username = usernameField.getText().trim(); // <-- added this line
                 String firstName = firstNameField.getText().trim();
                 String lastName = lastNameField.getText().trim();
                 String email = emailField.getText().trim();
@@ -256,7 +257,7 @@ public class LoginView extends StackPane {
                 }
 
                 // Call UserService
-                userService.createUser(userType, firstName, lastName, email, password);
+                userService.createUser(userType, username, firstName, lastName, email, password);
 
                 showAlert(Alert.AlertType.INFORMATION, "Account created successfully!");
 

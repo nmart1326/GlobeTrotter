@@ -30,7 +30,7 @@ public class UserService {
     }
 
     // Signup
-    public User createUser(String userType, String firstName, String lastName,
+    public User createUser(String userType, String username, String firstName, String lastName,
                            String email, String password) throws UserValidationException {
 
         validateUserInput(userType, firstName, lastName, email, password);
@@ -40,7 +40,7 @@ public class UserService {
             throw new UserValidationException("Email already exists: " + email);
         }
 
-        User user = new User(userType, firstName.trim(), lastName.trim(),
+        User user = new User(userType, username.trim(), firstName.trim(), lastName.trim(),
                 email.trim().toLowerCase(), password);
 
         userDAO.addUser(user);
@@ -57,20 +57,33 @@ public class UserService {
             throw new AuthenticationException("Password is required");
         }
 
-        // Get (email)
+        // Get (email) or username
+        String input = email.trim().toLowerCase();
         User user = null;
+
+
         if (userDAO instanceof SqliteUserDAO) {
-            user = ((SqliteUserDAO) userDAO).getUserByEmail(email.trim().toLowerCase());
+            SqliteUserDAO dao = (SqliteUserDAO) userDAO;
+            user = dao.getUserByEmail(input);
+            if (user == null) {
+                user = dao.getUserByUsername(input); // Try username
+            }
+        //user = ((SqliteUserDAO) userDAO).getUserByEmail(email.trim().toLowerCase());
         } else if (userDAO instanceof MockUserDAO) {
-            user = ((MockUserDAO) userDAO).getUserByEmail(email.trim().toLowerCase());
+            MockUserDAO dao = (MockUserDAO) userDAO;
+            user = dao.getUserByEmail(input);
+            if (user == null) {
+                user = dao.getUserByUsername(input); // try username
+            }
+            //user = ((MockUserDAO) userDAO).getUserByEmail(email.trim().toLowerCase());
         }
 
         if (user == null) {
-            throw new AuthenticationException("Invalid email or password");
+            throw new AuthenticationException("Invalid username/email or password");
         }
 
         if (!user.getPassword().equals(password)) {
-            throw new AuthenticationException("Invalid email or password");
+            throw new AuthenticationException("Invalid username/email or password");
         }
 
         return user;

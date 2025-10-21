@@ -108,4 +108,15 @@ public class MockUserDAO implements IUserDAO {
     public boolean userExists(int userID) {
         return users.containsKey(userID);
     }
+
+    public User getUserByUsername(String username) {
+        if (username == null) return null;
+        String lower = username.toLowerCase();
+        for (User user : users.values()) {
+            if (user.getFirstName().equalsIgnoreCase(lower) || user.getLastName().equalsIgnoreCase(lower)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

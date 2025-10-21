@@ -28,29 +28,32 @@ public class SqliteUserDAO implements IUserDAO {
                 System.out.println("Sample data already exists, skipping insertion.");
                 return;
             }
-
-            String insertQuery = "INSERT INTO users (UserType, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?)";
+            //Fraser - added include username in insert query
+            String insertQuery = "INSERT INTO users (UserType, Username, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(insertQuery);
 
             pstmt.setString(1, "Student");
-            pstmt.setString(2, "Zoe");
-            pstmt.setString(3, "Alloway");
-            pstmt.setString(4, "zalloway@example.com");
-            pstmt.setString(5, "Password123");
+            pstmt.setString(2, "zoe123"); // ADDED username
+            pstmt.setString(3, "Zoe");
+            pstmt.setString(4, "Alloway");
+            pstmt.setString(5, "zalloway@example.com");
+            pstmt.setString(6, "Password123");
             pstmt.addBatch();
 
             pstmt.setString(1, "Teacher");
-            pstmt.setString(2, "Madison");
-            pstmt.setString(3, "Paranihi");
-            pstmt.setString(4, "mparanihi@example.com");
-            pstmt.setString(5, "VerySecure@3");
+            pstmt.setString(2, "madisonP"); // ADDED username
+            pstmt.setString(3, "Madison");
+            pstmt.setString(4, "Paranihi");
+            pstmt.setString(5, "mparanihi@example.com");
+            pstmt.setString(6, "VerySecure@3");
             pstmt.addBatch();
 
             pstmt.setString(1, "Student");
-            pstmt.setString(2, "Toivo");
-            pstmt.setString(3, "Blanc");
-            pstmt.setString(4, "tblanc@example.com");
-            pstmt.setString(5, "ILoveDogs769");
+            pstmt.setString(2, "toivoB"); // ADDED username
+            pstmt.setString(3, "Toivo");
+            pstmt.setString(4, "Blanc");
+            pstmt.setString(5, "tblanc@example.com");
+            pstmt.setString(6, "ILoveDogs769");
             pstmt.addBatch();
 
             pstmt.executeBatch();
@@ -68,6 +71,7 @@ public class SqliteUserDAO implements IUserDAO {
             String query = "CREATE TABLE IF NOT EXISTS users ("
                     + "UserID INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "UserType VARCHAR NOT NULL,"
+                    + "Username VARCHAR NOT NULL," //Added by Fraser - get username login working
                     + "FirstName VARCHAR NOT NULL,"
                     + "LastName VARCHAR NOT NULL,"
                     + "Email VARCHAR NOT NULL,"
@@ -84,14 +88,16 @@ public class SqliteUserDAO implements IUserDAO {
     // Add
     @Override
     public void addUser(User user) {
-        String query = "INSERT INTO users (UserType, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?)";
+        // Added username and corrected parameter indexes
+        String query = "INSERT INTO users (UserType, Username, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getUserType());
-            pstmt.setString(2, user.getFirstName());
-            pstmt.setString(3, user.getLastName());
-            pstmt.setString(4, user.getEmail());
-            pstmt.setString(5, user.getPassword());
+            pstmt.setString(2, user.getUsername());  // ADDED
+            pstmt.setString(3, user.getFirstName());
+            pstmt.setString(4, user.getLastName());
+            pstmt.setString(5, user.getEmail());
+            pstmt.setString(6, user.getPassword());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -110,15 +116,17 @@ public class SqliteUserDAO implements IUserDAO {
     // Update
     @Override
     public void updateUser(User user) {
-        String query = "UPDATE users SET UserType = ?, FirstName = ?, LastName = ?, Email = ?, Password = ? WHERE UserID = ?";
+        //Fraser - added Username =? and corrected parameter indexes
+        String query = "UPDATE users SET UserType = ?, Username =?, FirstName = ?, LastName = ?, Email = ?, Password = ? WHERE UserID = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, user.getUserType());
-            pstmt.setString(2, user.getFirstName());
-            pstmt.setString(3, user.getLastName());
-            pstmt.setString(4, user.getEmail());
-            pstmt.setString(5, user.getPassword());
-            pstmt.setInt(6, user.getUserID());
+            pstmt.setString(2, user.getUsername()); // ADDED
+            pstmt.setString(3, user.getFirstName());
+            pstmt.setString(4, user.getLastName());
+            pstmt.setString(5, user.getEmail());
+            pstmt.setString(6, user.getPassword());
+            pstmt.setInt(7, user.getUserID());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -165,6 +173,7 @@ public class SqliteUserDAO implements IUserDAO {
                 return new User(
                         rs.getInt("UserID"),
                         rs.getString("UserType"),
+                        rs.getString("Username"),
                         rs.getString("FirstName"),
                         rs.getString("LastName"),
                         rs.getString("Email"),
@@ -190,6 +199,7 @@ public class SqliteUserDAO implements IUserDAO {
                 return new User(
                         rs.getInt("UserID"),
                         rs.getString("UserType"),
+                        rs.getString("Username"),
                         rs.getString("FirstName"),
                         rs.getString("LastName"),
                         rs.getString("Email"),
@@ -203,6 +213,31 @@ public class SqliteUserDAO implements IUserDAO {
         return null;
     }
 
+    public User getUserByUsername(String username) {
+        String query = "SELECT * FROM users WHERE lower(Username)=?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, username.toLowerCase());
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("UserID"),
+                        rs.getString("UserType"),
+                        rs.getString("Username"), // ADDED
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),
+                        rs.getString("Email"),
+                        rs.getString("Password")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting user by username: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+
+    }
     // List
     @Override
     public List<User> getAllUsers() {
@@ -217,6 +252,7 @@ public class SqliteUserDAO implements IUserDAO {
                 User user = new User(
                         rs.getInt("UserID"),
                         rs.getString("UserType"),
+                        rs.getString("Username"), // ADDED
                         rs.getString("FirstName"),
                         rs.getString("LastName"),
                         rs.getString("Email"),

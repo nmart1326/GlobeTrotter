@@ -4,14 +4,16 @@ public class User {
     // User table fields
     private int UserID;
     private String UserType;
+    private String Username; // ADDED
     private String FirstName;
     private String LastName;
     private String Email;
     private String Password;
 
     // Constructor without UserID
-    public User(String UserType, String FirstName, String LastName, String Email, String Password) {
+    public User(String UserType, String Username, String FirstName, String LastName, String Email, String Password) {
         this.UserType = UserType;
+        this.Username = Username; // ADDED
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.Email = Email;
@@ -19,9 +21,10 @@ public class User {
     }
 
     // Constructor with UserID
-    public User(int UserID, String UserType, String FirstName, String LastName, String Email, String Password) {
+    public User(int UserID, String UserType, String Username, String FirstName, String LastName, String Email, String Password) {
         this.UserID = UserID;
         this.UserType = UserType;
+        this.Username = Username; // ADDED
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.Email = Email;
@@ -44,6 +47,10 @@ public class User {
     public void setUserType(String UserType) {
         this.UserType = UserType;
     }
+
+    public String getUsername() {return Username; } // Added
+
+    public void setUsername(String Username) {this.Username = Username; } // Added
 
     public String getFirstName() {
         return FirstName;

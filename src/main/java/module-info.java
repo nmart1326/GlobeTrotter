@@ -13,6 +13,7 @@ module com.example.globetrotter {
 
 
     requires com.esri.arcgisruntime;
+    requires java.compiler;
 
 
     opens com.example.globetrotter.main to javafx.graphics, javafx.fxml, javafx.controls;

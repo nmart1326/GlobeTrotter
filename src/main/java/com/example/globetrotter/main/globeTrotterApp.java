@@ -56,7 +56,7 @@ public class globeTrotterApp extends Application {
 
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel✓, LoginScreen}
         StackPane root = new StackPane();
-        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView);
+        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton);
 
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);
@@ -71,38 +71,6 @@ public class globeTrotterApp extends Application {
         Scene scene = new Scene(root, 1280, 720);
         //Load Fonts
         scene.getStylesheets().add(getClass().getResource("/com/example/globetrotter/styles.css").toExternalForm());
-
-        // Quiz Button
-        Button startQuizBtn = new Button("Start Quiz");
-        HBox topRight = new HBox(startQuizBtn);
-        topRight.setAlignment(Pos.TOP_RIGHT);
-        topRight.setPadding(new Insets(10));
-
-        root.getChildren().add(topRight);
-        StackPane.setAlignment(topRight, Pos.TOP_RIGHT);
-
-        startQuizBtn.setOnAction(e -> {
-            var controller = new QuizController(new QuizService());
-            var quizView   = new QuizView(controller);
-            quizView.setOnBack(() -> root.getChildren().remove(quizView));
-            root.getChildren().add(quizView);
-        });
-
-        // --- FIXED VISIBILITY LOGIC ---
-        // Initially hidden while login view is displayed
-        startQuizBtn.setVisible(false);
-
-        // When login view is removed from root, show the quiz button
-        root.getChildren().addListener((javafx.collections.ListChangeListener<? super javafx.scene.Node>) change -> {
-            if (!root.getChildren().contains(loginView)) {
-                startQuizBtn.setVisible(true);
-            }
-        });
-        // --- END FIX ---
-
-        // Ensure map is still clickable
-        versionLabel.setMouseTransparent(true);
-        topRight.setPickOnBounds(false);
 
 
         // Window Label

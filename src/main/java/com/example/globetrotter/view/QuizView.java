@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.input.KeyCode; // Fraser - for escape button
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class QuizView extends StackPane {
 
@@ -15,27 +17,27 @@ public class QuizView extends StackPane {
     public QuizView(QuizController controller) {
         this.onBack = onBack;
 
-        // back button on invisible backbar
-        HBox topBar = new HBox(8);
-        Button back = new Button("Back");
-        back.setOnAction(e -> {
-            if (onBack != null) onBack.run();
-            else ((StackPane) getParent()).getChildren().remove(this);
-        });
-        topBar.getChildren().add(back);
-        StackPane.setAlignment(topBar, Pos.TOP_LEFT);
-        StackPane.setMargin(topBar, new Insets(12));
-        getChildren().add(topBar);
+        Image closeImage = new Image(getClass().getResourceAsStream("/assets/icons/close.png"));
+        ImageView closeImageView = new ImageView(closeImage);
+
+        closeImageView.setFitWidth(24);
+        closeImageView.setFitHeight(24);
+
 
         //Close Button for Quiz
-        Button close = new Button("X");
-        close.setStyle("-fx-font-weight: bold; -fx-background-color: transparent; -fx-text-fill: #333;");
+        Button close = new Button();
+        close.setGraphic(closeImageView);
+        close.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
+                " -fx-font-weight: bold; -fx-font-size: 16px;" +
+                "-fx-max-width: 50px;  -fx-max-height: 50px;" +
+                " -fx-background-radius: 10; -fx-padding: 0;" +
+                " -fx-alignment: CENTER; -fx-border-width: 0;" +
+                " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.5), 10, 0, 0, 1);");
         close.setOnAction(e -> ((StackPane) getParent()).getChildren().remove(this));
 
         HBox.setHgrow(close, Priority.ALWAYS);
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        topBar.getChildren().addAll(spacer, close);
 
         // rectangle background
         StackPane card = new StackPane();
@@ -76,6 +78,13 @@ public class QuizView extends StackPane {
         grid.add(d, 1, 1);
 
         Button next = new Button("Next");
+        next.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
+                " -fx-font-weight: bold; -fx-font-size: 16px;" +
+                "-fx-max-width: 150px;  -fx-max-height: 50px;" +
+                "-fx-min-width: 150px;  -fx-min-height: 50px;" +
+                " -fx-background-radius: 10; -fx-padding: 0;" +
+                " -fx-alignment: CENTER; -fx-border-width: 0;" +
+                " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.5), 10, 0, 0, 1);");
         next.setDisable(true);
         group.selectedToggleProperty().addListener((obs, oldT, newT) -> next.setDisable(newT == null));
         HBox bottomBar = new HBox(next);

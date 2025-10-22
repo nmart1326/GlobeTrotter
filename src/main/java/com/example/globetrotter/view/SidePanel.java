@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.layout.Priority;
 
 
 public class SidePanel {
@@ -41,6 +42,11 @@ public class SidePanel {
         Button settingsButton = new Button("Settings");
 
         panel.getChildren().addAll(navTitle, homeButton, quizButton, settingsButton);
+
+        InfoPanel infoPanel = new InfoPanel();
+        VBox.setVgrow(infoPanel, Priority.ALWAYS);
+        panel.getChildren().add(infoPanel);
+
         return panel;
     }
 
@@ -49,6 +55,15 @@ public class SidePanel {
         for (javafx.scene.Node node : panel.getChildren()) {
             if (node instanceof Button b && "Sign Out".equals(b.getText())) {
                 return b;
+            }
+        }
+        return null;
+    }
+
+    public InfoPanel getInfoPanel() {
+        for (javafx.scene.Node node : sideNavContent.getChildren()) {
+            if (node instanceof InfoPanel infoPanel) {
+                return infoPanel;
             }
         }
         return null;

@@ -44,8 +44,9 @@ public class globeTrotterApp extends Application {
         }
 
         // Initialize from com/example/globetrotter/view/
-        mapView = new Map();
         sidePanel = new SidePanel();
+        var infoPanel = sidePanel.getInfoPanel();
+        mapView = new Map(infoPanel);
         toggleButton = ToggleButtonFactory.createButton();
         loginView = new LoginView();
 
@@ -56,6 +57,7 @@ public class globeTrotterApp extends Application {
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel✓, LoginScreen}
         StackPane root = new StackPane();
         root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView);
+
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);
         StackPane.setAlignment(toggleButton, Pos.TOP_LEFT);
@@ -85,6 +87,18 @@ public class globeTrotterApp extends Application {
             quizView.setOnBack(() -> root.getChildren().remove(quizView));
             root.getChildren().add(quizView);
         });
+
+        // --- FIXED VISIBILITY LOGIC ---
+        // Initially hidden while login view is displayed
+        startQuizBtn.setVisible(false);
+
+        // When login view is removed from root, show the quiz button
+        root.getChildren().addListener((javafx.collections.ListChangeListener<? super javafx.scene.Node>) change -> {
+            if (!root.getChildren().contains(loginView)) {
+                startQuizBtn.setVisible(true);
+            }
+        });
+        // --- END FIX ---
 
         // Ensure map is still clickable
         versionLabel.setMouseTransparent(true);

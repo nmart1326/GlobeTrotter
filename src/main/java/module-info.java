@@ -8,10 +8,17 @@ module com.example.globetrotter {
     requires java.sql;
     requires org.slf4j;
 
+    requires java.net.http;
+    requires org.json;
+    requires java.dotenv;
+
+
 
     requires com.esri.arcgisruntime;
 
 
     opens com.example.globetrotter.main to javafx.graphics, javafx.fxml, javafx.controls;
     exports com.example.globetrotter.main;
+    exports com.example.globetrotter.view;
+    exports com.example.globetrotter.service;
 }

@@ -51,7 +51,7 @@ public class globeTrotterApp extends Application {
 
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel✓, LoginScreen}
         StackPane root = new StackPane();
-        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView);
+        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton);
 
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);

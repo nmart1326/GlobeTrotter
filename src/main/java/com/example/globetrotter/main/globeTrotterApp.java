@@ -1,21 +1,16 @@
 package com.example.globetrotter.main;
 
 import com.example.globetrotter.controller.MainController;
-import com.example.globetrotter.controller.QuizController;
-import com.example.globetrotter.service.QuizService;
 import com.example.globetrotter.view.LoginView;
 import com.example.globetrotter.view.Map;
-import com.example.globetrotter.view.QuizView;
 import com.example.globetrotter.view.SidePanel;
 import com.example.globetrotter.view.ToggleButtonFactory;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.nio.file.Path;
@@ -56,7 +51,7 @@ public class globeTrotterApp extends Application {
 
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel✓, LoginScreen}
         StackPane root = new StackPane();
-        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton);
+        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView);
 
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);

@@ -10,8 +10,6 @@ module com.example.globetrotter {
 
     requires java.net.http;
     requires org.json;
-    requires java.dotenv;
-
 
 
     requires com.esri.arcgisruntime;

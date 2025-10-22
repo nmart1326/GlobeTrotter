@@ -6,22 +6,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.function.Consumer; //added async
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 
 public class GeoInfoService {
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey;
+
+    // added API key
+    private static final String apiKey = "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";
+    // end added API key
 
     public GeoInfoService() {
-        // Load key from .env file
-        Dotenv dotenv = Dotenv.load();
-        this.apiKey = dotenv.get("OPENAI_API_KEY");
-
-        // Debug check
-        System.out.println("[GeoInfoService] Loaded API key? " +
-                (apiKey != null && !apiKey.isEmpty() ? "Yes" : "No"));
+        System.out.println("[GeoInfoService] Using built-in API key");
     }
 
     /**
@@ -29,9 +25,7 @@ public class GeoInfoService {
      * @param featureData Raw string from clicked ArcGIS features.
      * @param callback Function to receive the GPT response text once ready.
      */
-    //added async
     public void explainFeatureAsync(String featureData, Consumer<String> callback) {
-        //end added async
         String prompt = """
 You are a geography guide for students aged 7–14.
 
@@ -86,7 +80,6 @@ Now combine and summarize all ArcGIS data into ONE InfoPanel below:
                     .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                     .build();
 
-            // --- added async ---
             HttpClient client = HttpClient.newHttpClient();
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenApply(HttpResponse::body)
@@ -116,8 +109,6 @@ Now combine and summarize all ArcGIS data into ONE InfoPanel below:
                         callback.accept("Error contacting GPT service.");
                         return null;
                     });
-            // --- end added async ---
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,5 +184,4 @@ Question:
             callback.accept("Unexpected error: " + e.getMessage());
         }
     }
-
 }

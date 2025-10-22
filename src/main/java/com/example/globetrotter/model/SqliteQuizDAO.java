@@ -19,49 +19,37 @@ public class SqliteQuizDAO implements IQuizDAO {
         insertSampleData();
     }
 
-    // Sample data insertion
+    // Initial quiz data insertion
     private void insertSampleData() {
         try {
+            // Check if QuizID 1 already exists
+            String checkQuery = "SELECT COUNT(*) as count FROM quiz WHERE QuizID = 1";
             Statement checkStatement = connection.createStatement();
-            ResultSet rs = checkStatement.executeQuery("SELECT COUNT(*) as count FROM quiz");
+            ResultSet rs = checkStatement.executeQuery(checkQuery);
             if (rs.next() && rs.getInt("count") > 0) {
-                System.out.println("Quiz sample data already exists, skipping insertion.");
+                System.out.println("Australian quiz already exists, skipping insertion.");
                 return;
             }
 
             String insertQuery = "INSERT INTO quiz (Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(insertQuery);
 
-            // Sample Quiz 1
-            pstmt.setString(1, "What is the capital of France?");
-            pstmt.setString(2, "Which planet is known as the Red Planet?");
-            pstmt.setString(3, "What is the largest ocean on Earth?");
-            pstmt.setString(4, "Who painted the Mona Lisa?");
-            pstmt.setString(5, "What is the smallest country in the world?");
-            pstmt.setString(6, "Which river is the longest in the world?");
-            pstmt.setString(7, "What is the capital of Japan?");
-            pstmt.setString(8, "Which continent is the Sahara Desert located in?");
-            pstmt.setString(9, "What is the tallest mountain in the world?");
-            pstmt.setString(10, "Which country is known as the Land of the Rising Sun?");
-            pstmt.addBatch();
+            // Australian Quiz
+            pstmt.setString(1, "What is the capital city of Australia?");
+            pstmt.setString(2, "Which one of these animals is unique to Australia?");
+            pstmt.setString(3, "How many states does Australia have?");
+            pstmt.setString(4, "What is the population of Australia (to the nearest million)?");
+            pstmt.setString(5, "Which of these is not the name of an Australian state?");
+            pstmt.setString(6, "What initially attracted immigrants to Australia?");
+            pstmt.setString(7, "What resource does Australia provide the most of to other countries?");
+            pstmt.setString(8, "What does ANZAC stand for?");
+            pstmt.setString(9, "What two animals can be found on the Australian crest?");
+            pstmt.setString(10, "What is the name of the Australian national anthem?");
 
-            // Sample Quiz 2
-            pstmt.setString(1, "What is the chemical symbol for gold?");
-            pstmt.setString(2, "How many continents are there?");
-            pstmt.setString(3, "What is the capital of Australia?");
-            pstmt.setString(4, "Which ocean is the smallest?");
-            pstmt.setString(5, "What year did World War II end?");
-            pstmt.setString(6, "Which is the largest mammal in the world?");
-            pstmt.setString(7, "What is the capital of Canada?");
-            pstmt.setString(8, "Which country has the most population?");
-            pstmt.setString(9, "What is the longest river in South America?");
-            pstmt.setString(10, "Which language has the most native speakers?");
-            pstmt.addBatch();
-
-            pstmt.executeBatch();
-            System.out.println("Quiz sample data inserted successfully.");
+            pstmt.executeUpdate();
+            System.out.println("Australian quiz inserted successfully.");
         } catch (SQLException e) {
-            System.err.println("Error inserting quiz sample data: " + e.getMessage());
+            System.err.println("Error inserting Australian quiz: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -11,40 +11,32 @@ public class MockQuizDAO implements IQuizDAO {
     public MockQuizDAO() {
         quizzes = new HashMap<>();
         nextId = 1;
-        insertSampleData();
+        insertInitialQuiz();
     }
 
-    // Sample data insertion
-    private void insertSampleData() {
-        // Sample Quiz 1
-        Quiz quiz1 = new Quiz(
-                "What is the capital of France?",
-                "Which planet is known as the Red Planet?",
-                "What is the largest ocean on Earth?",
-                "Who painted the Mona Lisa?",
-                "What is the smallest country in the world?",
-                "Which river is the longest in the world?",
-                "What is the capital of Japan?",
-                "Which continent is the Sahara Desert located in?",
-                "What is the tallest mountain in the world?",
-                "Which country is known as the Land of the Rising Sun?"
-        );
-        addQuiz(quiz1);
+    // Initial quiz data insertion
+    private void insertInitialQuiz() {
+        // Check if QuizID 1 already exists
+        if (quizzes.containsKey(1)) {
+            return;
+        }
 
-        // Sample Quiz 2
-        Quiz quiz2 = new Quiz(
-                "What is the chemical symbol for gold?",
-                "How many continents are there?",
-                "What is the capital of Australia?",
-                "Which ocean is the smallest?",
-                "What year did World War II end?",
-                "Which is the largest mammal in the world?",
-                "What is the capital of Canada?",
-                "Which country has the most population?",
-                "What is the longest river in South America?",
-                "Which language has the most native speakers?"
+        // Australian Quiz - always at QuizID 1
+        Quiz quiz1 = new Quiz(
+                1,
+                "What is the capital city of Australia?",
+                "Which one of these animals is unique to Australia?",
+                "How many states does Australia have?",
+                "What is the population of Australia (to the nearest million)?",
+                "Which of these is not the name of an Australian state?",
+                "What initially attracted immigrants to Australia?",
+                "What resource does Australia provide the most of to other countries?",
+                "What does ANZAC stand for?",
+                "What two animals can be found on the Australian crest?",
+                "What is the name of the Australian national anthem?"
         );
-        addQuiz(quiz2);
+        quizzes.put(1, quiz1);
+        nextId = 2;
     }
 
     // Add

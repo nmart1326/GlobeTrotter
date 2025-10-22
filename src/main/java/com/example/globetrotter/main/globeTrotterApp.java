@@ -53,6 +53,9 @@ public class globeTrotterApp extends Application {
         StackPane root = new StackPane();
         root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView );
 
+        LoginView loginView = new LoginView();
+        root.getChildren().add(loginView);
+
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);
         StackPane.setAlignment(toggleButton, Pos.TOP_LEFT);

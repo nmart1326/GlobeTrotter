@@ -15,6 +15,30 @@ public class SqliteUserDAO implements IUserDAO {
 
     public SqliteUserDAO() {
         connection = SqliteConnection.getInstance();
+
+        // Check if username exists
+        try (Statement stmt = connection.createStatement()) {
+            boolean hasUsername = false;
+            try (ResultSet rs = stmt.executeQuery("PRAGMA table_info(users);")) {
+                while (rs.next()) {
+                    String colName = rs.getString("name");
+                    if ("Username".equalsIgnoreCase(colName)) {
+                        hasUsername = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasUsername) {
+                System.out.println("[SqliteUserDAO] Adding missing 'Username' column to users table...");
+                stmt.execute("ALTER TABLE users ADD COLUMN Username TEXT;");
+            }
+            System.out.println("[SqliteUserDAO] Database verified successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("[SqliteUserDAO] Database verification failed: " + e.getMessage());
+        }
+
+
         createTable();
         insertSampleData();
     }

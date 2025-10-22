@@ -33,7 +33,7 @@ public class UserService {
     public User createUser(String userType, String username, String firstName, String lastName,
                            String email, String password) throws UserValidationException {
 
-        validateUserInput(userType, firstName, lastName, email, password);
+        validateUserInput(userType, username, firstName, lastName, email, password);
 
         // Check email is not already in use
         if (isEmailTaken(email)) {
@@ -90,14 +90,14 @@ public class UserService {
     }
 
     // Update profile
-    public void updateUser(User user, String userType, String firstName, String lastName,
+    public void updateUser(User user, String userType, String username, String firstName, String lastName,
                            String email, String password) throws UserValidationException {
 
         if (user == null) {
             throw new UserValidationException("User cannot be null");
         }
 
-        validateUserInput(userType, firstName, lastName, email, password);
+        validateUserInput(userType, username, firstName, lastName, email, password);
 
         // Check email is not already in use
         String normalizedEmail = email.trim().toLowerCase();
@@ -170,7 +170,7 @@ public class UserService {
     }
 
     // Input validation
-    private void validateUserInput(String userType, String firstName, String lastName,
+    private void validateUserInput(String userType, String username, String firstName, String lastName,
                                    String email, String password) throws UserValidationException {
 
         // User type validation
@@ -181,6 +181,7 @@ public class UserService {
         if (!"Teacher".equals(userType) && !"Student".equals(userType)) {
             throw new UserValidationException("User type must be either 'Teacher' or 'Student'");
         }
+
 
         // Firstname validation
         if (firstName == null || firstName.trim().isEmpty()) {
@@ -198,6 +199,15 @@ public class UserService {
 
         if (lastName.trim().length() > MAX_NAME_LENGTH) {
             throw new UserValidationException("Last name must be " + MAX_NAME_LENGTH + " characters or less");
+        }
+
+        // Username validation
+        if (username == null || username.trim().isEmpty()) {
+            throw new UserValidationException("Username is required");
+        }
+
+        if (username.trim().length() > MAX_NAME_LENGTH) {
+            throw new UserValidationException("Username must be " + MAX_NAME_LENGTH + " characters or less");
         }
 
         // Email validation

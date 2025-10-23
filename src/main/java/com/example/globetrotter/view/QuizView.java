@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.image.*;
+
 
 import java.util.List;
 
@@ -210,17 +212,24 @@ public class QuizView extends StackPane {
         int quizId = 1;         // Currently you’re running Australian quiz (QuizID = 1)
         new com.example.globetrotter.service.ScoreService().saveScore(currentUserId, quizId, score);
 
+        Image partyImage = new Image (getClass().getResourceAsStream("/assets/icons/party.png"));
+        ImageView partyIcon = new ImageView(partyImage);
+        partyIcon.setFitHeight(40);
+        partyIcon.setPreserveRatio(true);
+
         content.getChildren().clear();
-        Label result = new Label("🎉 Quiz Complete!\nYour score: " + score + " / " + questions.size());
+        Label result = new Label("Quiz Complete!\nYour score: " + score + " / " + questions.size(), partyIcon);
+        result.setContentDisplay(ContentDisplay.TOP);
         result.setStyle("-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#111827;");
 
         Button restart = new Button("Restart Quiz");
         restart.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white;" +
-                " -fx-font-weight: bold; -fx-font-size: 16px;" +
-                "-fx-max-width: 180px;  -fx-max-height: 50px;" +
-                " -fx-background-radius: 10; -fx-padding: 10 20;" +
-                " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.4), 10, 0, 0, 1);");
-
+                "-fx-font-weight: bold; -fx-font-size: 16px;" +
+                "-fx-max-width: 180px; -fx-max-height: 50px;" +
+                "-fx-background-radius: 10; -fx-padding: 10 20;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 1);" +
+                "-fx-focus-color: transparent; -fx-faint-focus-color: transparent; " +
+                "-fx-border-color: transparent;");
         restart.setOnAction(e -> restartQuiz());
 
         VBox box = new VBox(20, result, restart);

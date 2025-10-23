@@ -16,7 +16,7 @@ public class SqliteScoreDAO implements IScoreDAO {
     public SqliteScoreDAO() {
         connection = SqliteConnection.getInstance();
         createTable();
-        insertSampleData();
+       //Not needed anymore (was just for testing) insertSampleData();
     }
 
     // Sample data insertion
@@ -68,8 +68,7 @@ public class SqliteScoreDAO implements IScoreDAO {
                     + "QuizID INTEGER NOT NULL,"
                     + "HighScore INTEGER NOT NULL DEFAULT 0,"
                     + "FOREIGN KEY (UserID) REFERENCES users(UserID) ON DELETE CASCADE,"
-                    + "FOREIGN KEY (QuizID) REFERENCES quiz(QuizID) ON DELETE CASCADE,"
-                    + "UNIQUE(UserID, QuizID)"
+                    + "FOREIGN KEY (QuizID) REFERENCES quiz(QuizID) ON DELETE CASCADE"
                     + ")";
             statement.execute(query);
 

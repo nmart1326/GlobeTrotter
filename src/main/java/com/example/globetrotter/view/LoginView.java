@@ -2,6 +2,9 @@ package com.example.globetrotter.view;
 
 import com.example.globetrotter.model.SqliteUserDAO;
 import com.example.globetrotter.service.UserService;
+import com.example.globetrotter.util.UserSession;
+import com.example.globetrotter.model.User;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -275,10 +278,16 @@ public class LoginView extends StackPane {
                 String email = usernameFieldLogin.getText().trim();
                 String password = passwordFieldLogin.getText();
 
-                userService.authenticateUser(email, password);
+                // Authenticate user and get the actual User object
+                User loggedInUser = userService.authenticateUser(email, password);
 
-                showAlert(Alert.AlertType.INFORMATION, "Login successful!");
-                // TODO: proceed to main app screen
+                //Store user in session (so QuizView & others can access it)
+                UserSession.getInstance().setUser(loggedInUser);
+
+                showAlert(Alert.AlertType.INFORMATION,
+                        "Login successful! " + loggedInUser.getFirstName() + ".");
+
+                // Remove login view (go to next screen)
                 StackPane parent = (StackPane) this.getParent();
                 parent.getChildren().remove(this);
 

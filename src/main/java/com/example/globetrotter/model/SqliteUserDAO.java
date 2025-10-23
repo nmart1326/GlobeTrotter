@@ -52,6 +52,15 @@ public class SqliteUserDAO implements IUserDAO {
                 System.out.println("Sample data already exists, skipping insertion.");
                 return;
             }
+
+            // Insert Guest manually at UserID = 1 (fixed)
+            PreparedStatement guestStmt = connection.prepareStatement(
+                    "INSERT INTO users (UserID, UserType, Username, FirstName, LastName, Email, Password) " +
+                            "VALUES (1, 'Guest', 'guest', 'Guest', 'User', 'guest@globetrotter.local', 'guest')"
+            );
+            guestStmt.executeUpdate();
+            System.out.println("Guest user created (UserID = 1)");
+
             //Fraser - added include username in insert query
             String insertQuery = "INSERT INTO users (UserType, Username, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(insertQuery);

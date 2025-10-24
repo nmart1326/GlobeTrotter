@@ -12,13 +12,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-
 import java.util.List;
 
 public class QuizView extends StackPane {
 
     private Runnable onBack;
     public void setOnBack(Runnable r) { this.onBack = r; }
+
+    // added to make QuizSelectionView work
+    private final StackPane root;
 
     // Core quiz data
     private List<QuizQuestion> questions;
@@ -34,7 +36,9 @@ public class QuizView extends StackPane {
     private VBox content;
     private StackPane card;
 
-    public QuizView(QuizController controller) {
+    // added to make QuizSelectionView work
+    public QuizView(QuizController controller, StackPane root) {
+        this.root = root;
         this.onBack = onBack;
 
         QuizService quizService = new QuizService();
@@ -56,7 +60,18 @@ public class QuizView extends StackPane {
                 " -fx-background-radius: 10; -fx-padding: 0;" +
                 " -fx-alignment: CENTER; -fx-border-width: 0;" +
                 " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.5), 10, 0, 0, 1);");
-        close.setOnAction(e -> ((StackPane) getParent()).getChildren().remove(this));
+        close.setOnAction(e -> root.getChildren().remove(this)); // added to make QuizSelectionView work
+
+        // Return to Quiz Selection panel button
+        Button returnButton = new Button("⮐ Return");
+        returnButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
+                " -fx-font-weight: bold; -fx-font-size: 14px;" +
+                "-fx-background-radius: 8; -fx-padding: 8 18;" +
+                " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.3), 8, 0, 0, 1);");
+        returnButton.setOnAction(e -> {
+            root.getChildren().remove(this);
+            root.getChildren().add(new QuizSelectionView(root));
+        });
 
         // Card background
         card = new StackPane();
@@ -99,6 +114,7 @@ public class QuizView extends StackPane {
         grid.add(c, 0, 1);
         grid.add(d, 1, 1);
 
+        // Next button in Quiz View
         next = new Button("Next");
         next.setDisable(true);
         next.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
@@ -108,6 +124,8 @@ public class QuizView extends StackPane {
                 " -fx-background-radius: 10; -fx-padding: 0;" +
                 " -fx-alignment: CENTER; -fx-border-width: 0;" +
                 " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.5), 10, 0, 0, 1);");
+
+
 
         HBox bottomBar = new HBox(next);
         bottomBar.setAlignment(Pos.CENTER_RIGHT);
@@ -120,6 +138,9 @@ public class QuizView extends StackPane {
         StackPane.setAlignment(close, Pos.TOP_RIGHT);
         StackPane.setMargin(close, new Insets(10, 14, 0, 0));
         card.getChildren().add(close);
+        StackPane.setAlignment(returnButton, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(returnButton, new Insets(0, 14, 10, 0));
+        card.getChildren().add(returnButton);
 
         setAlignment(Pos.CENTER);
         getChildren().add(card);
@@ -148,12 +169,35 @@ public class QuizView extends StackPane {
         setFocusTraversable(true);
         setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                ((StackPane) getParent()).getChildren().remove(this);
+                root.getChildren().remove(this); // added to make QuizSelectionView work
             }
         });
         sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) requestFocus();
         });
+    }
+
+    //Dynamically loads a quiz from the database by its ID.
+    public void loadQuizById(int quizId) {
+        try {
+            SqliteQuizQuestionDAO dao = new SqliteQuizQuestionDAO();
+            questions = dao.getQuestionsForQuiz(quizId);
+            currentIndex = 0;
+            score = 0;
+
+            if (questions.isEmpty()) {
+                questionLabel.setText("No questions found for this quiz!");
+                next.setDisable(true);
+            } else {
+                loadQuestion();
+            }
+
+            System.out.println("[QuizView] Loaded quiz with ID=" + quizId + " (" + questions.size() + " questions)");
+        } catch (Exception e) {
+            System.err.println("[QuizView] Error loading quiz by ID: " + e.getMessage());
+            e.printStackTrace();
+            questionLabel.setText("Failed to load quiz.");
+        }
     }
 
     private void loadQuestion() {
@@ -201,13 +245,12 @@ public class QuizView extends StackPane {
     }
 
     private void showResults() {
-        // Save the user's score in the database
         int currentUserId = UserSession.getInstance().getUserId();
         if (currentUserId == -1) {
             System.err.println("No logged-in user found. Defaulting to guest (UserID=1).");
             currentUserId = 1;
         }
-        int quizId = 1;         // Currently you’re running Australian quiz (QuizID = 1)
+        int quizId = 1;
         new com.example.globetrotter.service.ScoreService().saveScore(currentUserId, quizId, score);
 
         content.getChildren().clear();
@@ -220,39 +263,36 @@ public class QuizView extends StackPane {
                 "-fx-max-width: 180px;  -fx-max-height: 50px;" +
                 " -fx-background-radius: 10; -fx-padding: 10 20;" +
                 " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.4), 10, 0, 0, 1);");
-
         restart.setOnAction(e -> restartQuiz());
 
-        VBox box = new VBox(20, result, restart);
+        Button returnBtn = new Button("Return to Quiz Selection");
+        returnBtn.setStyle("-fx-background-color: #10B981; -fx-text-fill: white;" +
+                " -fx-font-weight: bold; -fx-font-size: 16px;" +
+                "-fx-max-width: 220px;  -fx-max-height: 50px;" +
+                " -fx-background-radius: 10; -fx-padding: 10 20;" +
+                " -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.4), 10, 0, 0, 1);");
+
+        // added to make QuizSelectionView work
+        returnBtn.setOnAction(e -> {
+            root.getChildren().remove(this);
+            root.getChildren().add(new QuizSelectionView(root));
+        });
+
+        VBox box = new VBox(20, result, restart, returnBtn);
         box.setAlignment(Pos.CENTER);
-        content.getChildren().clear();
         content.getChildren().add(box);
     }
 
-
     private void restartQuiz() {
-        // Reset internal variables (for consistency)
         score = 0;
         currentIndex = 0;
 
-        // Remove the current quiz view from parent
-        StackPane parent = (StackPane) getParent();
-        if (parent != null) {
-            parent.getChildren().remove(this);
-
-            // Create a fresh quiz controller and view (same as new quiz start)
-            com.example.globetrotter.controller.QuizController newController =
-                    new com.example.globetrotter.controller.QuizController(
-                            new com.example.globetrotter.service.QuizService());
-            com.example.globetrotter.view.QuizView newQuizView =
-                    new com.example.globetrotter.view.QuizView(newController);
-
-            parent.getChildren().add(newQuizView);
-        } else {
-            System.err.println("Restart failed: QuizView has no parent StackPane.");
-        }
+        // added to make QuizSelectionView work
+        root.getChildren().remove(this);
+        QuizController newController = new QuizController(new QuizService());
+        QuizView newQuizView = new QuizView(newController, root);
+        root.getChildren().add(newQuizView);
     }
-
 
     private ToggleButton option(String text, ToggleGroup group) {
         ToggleButton b = new ToggleButton(text);

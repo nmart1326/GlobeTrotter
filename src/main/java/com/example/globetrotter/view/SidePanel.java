@@ -8,6 +8,7 @@ import javafx.scene.layout.Region;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 
 public class SidePanel {
@@ -42,6 +43,8 @@ public class SidePanel {
         Button settingsButton = new Button("Settings");
 
         panel.getChildren().addAll(navTitle, homeButton, quizButton, settingsButton);
+
+
 
         InfoPanel infoPanel = new InfoPanel();
         VBox.setVgrow(infoPanel, Priority.ALWAYS);

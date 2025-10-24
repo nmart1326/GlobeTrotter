@@ -186,4 +186,29 @@ public class SqliteQuizQuestionDAO {
         }
         return list;
     }
+
+    // Inserts a single GPT-generated question into the quiz_questions table.
+    public void addGeneratedQuestion(int quizId, QuizQuestion question) {
+        String sql = """
+            INSERT INTO quiz_questions
+            (QuizID, QuestionText, OptionA, OptionB, OptionC, OptionD, CorrectOption)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, quizId);
+            ps.setString(2, question.getQuestionText());
+            ps.setString(3, question.getOptionA());
+            ps.setString(4, question.getOptionB());
+            ps.setString(5, question.getOptionC());
+            ps.setString(6, question.getOptionD());
+            ps.setString(7, question.getCorrectOption());
+            ps.executeUpdate();
+
+            System.out.println("[SqliteQuizQuestionDAO] Added generated question: " + question.getQuestionText());
+        } catch (SQLException e) {
+            System.err.println("[SqliteQuizQuestionDAO] Error inserting generated question: " + e.getMessage());
+        }
+    }
+
 }

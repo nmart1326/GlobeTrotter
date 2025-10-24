@@ -2,6 +2,7 @@ package com.example.globetrotter.model;
 
 public class Quiz {
     private int QuizID;
+    private String title;
     private String Q1;
     private String Q2;
     private String Q3;
@@ -14,8 +15,9 @@ public class Quiz {
     private String Q10;
 
     // Constructor without QuizID
-    public Quiz(String Q1, String Q2, String Q3, String Q4, String Q5,
+    public Quiz(String title, String Q1, String Q2, String Q3, String Q4, String Q5,
                 String Q6, String Q7, String Q8, String Q9, String Q10) {
+        this.title = title;
         this.Q1 = Q1;
         this.Q2 = Q2;
         this.Q3 = Q3;
@@ -29,9 +31,10 @@ public class Quiz {
     }
 
     // Constructor with QuizID
-    public Quiz(int QuizID, String Q1, String Q2, String Q3, String Q4, String Q5,
+    public Quiz(int QuizID, String title, String Q1, String Q2, String Q3, String Q4, String Q5,
                 String Q6, String Q7, String Q8, String Q9, String Q10) {
         this.QuizID = QuizID;
+        this.title = title;
         this.Q1 = Q1;
         this.Q2 = Q2;
         this.Q3 = Q3;
@@ -52,6 +55,10 @@ public class Quiz {
     public void setQuizID(int QuizID) {
         this.QuizID = QuizID;
     }
+
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
 
     public String getQ1() {
         return Q1;
@@ -137,6 +144,7 @@ public class Quiz {
     public String toString() {
         return "Quiz{" +
                 "QuizID=" + QuizID +
+                ", title='" + title + '\'' +
                 ", Q1='" + Q1 + '\'' +
                 ", Q2='" + Q2 + '\'' +
                 ", Q3='" + Q3 + '\'' +

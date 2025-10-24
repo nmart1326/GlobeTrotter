@@ -23,7 +23,7 @@ public class MockQuizDAO implements IQuizDAO {
 
         // Australian Quiz - always at QuizID 1
         Quiz quiz1 = new Quiz(
-                1,
+                "Australian Knowledge Quiz",
                 "What is the capital city of Australia?",
                 "Which one of these animals is unique to Australia?",
                 "How many states does Australia have?",

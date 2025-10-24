@@ -31,20 +31,21 @@ public class SqliteQuizDAO implements IQuizDAO {
                 return;
             }
 
-            String insertQuery = "INSERT INTO quiz (Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO quiz (Title, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(insertQuery);
 
             // Australian Quiz
-            pstmt.setString(1, "What is the capital city of Australia?");
-            pstmt.setString(2, "Which one of these animals is unique to Australia?");
-            pstmt.setString(3, "How many states does Australia have?");
-            pstmt.setString(4, "What is the population of Australia (to the nearest million)?");
-            pstmt.setString(5, "Which of these is not the name of an Australian state?");
-            pstmt.setString(6, "What initially attracted immigrants to Australia?");
-            pstmt.setString(7, "What resource does Australia provide the most of to other countries?");
-            pstmt.setString(8, "What does ANZAC stand for?");
-            pstmt.setString(9, "What two animals can be found on the Australian crest?");
-            pstmt.setString(10, "What is the name of the Australian national anthem?");
+            pstmt.setString(1, "Australian Knowledge Quiz");
+            pstmt.setString(2, "What is the capital city of Australia?");
+            pstmt.setString(3, "Which one of these animals is unique to Australia?");
+            pstmt.setString(4, "How many states does Australia have?");
+            pstmt.setString(5, "What is the population of Australia (to the nearest million)?");
+            pstmt.setString(6, "Which of these is not the name of an Australian state?");
+            pstmt.setString(7, "What initially attracted immigrants to Australia?");
+            pstmt.setString(8, "What resource does Australia provide the most of to other countries?");
+            pstmt.setString(9, "What does ANZAC stand for?");
+            pstmt.setString(10, "What two animals can be found on the Australian crest?");
+            pstmt.setString(11, "What is the name of the Australian national anthem?");
 
             pstmt.executeUpdate();
             System.out.println("Australian quiz inserted successfully.");
@@ -60,6 +61,7 @@ public class SqliteQuizDAO implements IQuizDAO {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS quiz ("
                     + "QuizID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "Title VARCHAR,"  // add this for quiz_title support
                     + "Q1 VARCHAR,"
                     + "Q2 VARCHAR,"
                     + "Q3 VARCHAR,"
@@ -73,28 +75,37 @@ public class SqliteQuizDAO implements IQuizDAO {
                     + ")";
             statement.execute(query);
             System.out.println("Quiz table created successfully.");
+
+            // add this for existing database upgrade
+            statement.execute("ALTER TABLE quiz ADD COLUMN Title VARCHAR;");
         } catch (SQLException e) {
-            System.err.println("Error creating quiz table: " + e.getMessage());
-            e.printStackTrace();
+            if (e.getMessage().contains("duplicate column name")) {
+                System.out.println("Column Title already exists — skipping ALTER TABLE.");
+            } else {
+                System.err.println("Error creating quiz table: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
+
 
     // Add
     @Override
     public void addQuiz(Quiz quiz) {
-        String query = "INSERT INTO quiz (Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO quiz (Title, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, quiz.getQ1());
-            pstmt.setString(2, quiz.getQ2());
-            pstmt.setString(3, quiz.getQ3());
-            pstmt.setString(4, quiz.getQ4());
-            pstmt.setString(5, quiz.getQ5());
-            pstmt.setString(6, quiz.getQ6());
-            pstmt.setString(7, quiz.getQ7());
-            pstmt.setString(8, quiz.getQ8());
-            pstmt.setString(9, quiz.getQ9());
-            pstmt.setString(10, quiz.getQ10());
+            pstmt.setString(1, quiz.getTitle());
+            pstmt.setString(2, quiz.getQ1());
+            pstmt.setString(3, quiz.getQ2());
+            pstmt.setString(4, quiz.getQ3());
+            pstmt.setString(5, quiz.getQ4());
+            pstmt.setString(6, quiz.getQ5());
+            pstmt.setString(7, quiz.getQ6());
+            pstmt.setString(8, quiz.getQ7());
+            pstmt.setString(9, quiz.getQ8());
+            pstmt.setString(10, quiz.getQ9());
+            pstmt.setString(11, quiz.getQ10());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -113,20 +124,21 @@ public class SqliteQuizDAO implements IQuizDAO {
     // Update
     @Override
     public void updateQuiz(Quiz quiz) {
-        String query = "UPDATE quiz SET Q1 = ?, Q2 = ?, Q3 = ?, Q4 = ?, Q5 = ?, Q6 = ?, Q7 = ?, Q8 = ?, Q9 = ?, Q10 = ? WHERE QuizID = ?";
+        String query = "UPDATE quiz SET Title = ?, Q1 = ?, Q2 = ?, Q3 = ?, Q4 = ?, Q5 = ?, Q6 = ?, Q7 = ?, Q8 = ?, Q9 = ?, Q10 = ? WHERE QuizID = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, quiz.getQ1());
-            pstmt.setString(2, quiz.getQ2());
-            pstmt.setString(3, quiz.getQ3());
-            pstmt.setString(4, quiz.getQ4());
-            pstmt.setString(5, quiz.getQ5());
-            pstmt.setString(6, quiz.getQ6());
-            pstmt.setString(7, quiz.getQ7());
-            pstmt.setString(8, quiz.getQ8());
-            pstmt.setString(9, quiz.getQ9());
-            pstmt.setString(10, quiz.getQ10());
-            pstmt.setInt(11, quiz.getQuizID());
+            pstmt.setString(1, quiz.getTitle());
+            pstmt.setString(2, quiz.getQ1());
+            pstmt.setString(3, quiz.getQ2());
+            pstmt.setString(4, quiz.getQ3());
+            pstmt.setString(5, quiz.getQ4());
+            pstmt.setString(6, quiz.getQ5());
+            pstmt.setString(7, quiz.getQ6());
+            pstmt.setString(8, quiz.getQ7());
+            pstmt.setString(9, quiz.getQ8());
+            pstmt.setString(10, quiz.getQ9());
+            pstmt.setString(11, quiz.getQ10());
+            pstmt.setInt(12, quiz.getQuizID());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -172,6 +184,7 @@ public class SqliteQuizDAO implements IQuizDAO {
             if (rs.next()) {
                 return new Quiz(
                         rs.getInt("QuizID"),
+                        rs.getString("Title"),
                         rs.getString("Q1"),
                         rs.getString("Q2"),
                         rs.getString("Q3"),
@@ -204,6 +217,7 @@ public class SqliteQuizDAO implements IQuizDAO {
             while (rs.next()) {
                 Quiz quiz = new Quiz(
                         rs.getInt("QuizID"),
+                        rs.getString("Title"),
                         rs.getString("Q1"),
                         rs.getString("Q2"),
                         rs.getString("Q3"),

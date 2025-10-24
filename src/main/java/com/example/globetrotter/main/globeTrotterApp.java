@@ -51,7 +51,10 @@ public class globeTrotterApp extends Application {
 
         // UI Layers from Bottom->Top: {versionLabel✓, map✓, QuizTablet, NavigationsidePanel✓, LoginScreen}
         StackPane root = new StackPane();
-        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton, loginView );
+        root.getChildren().addAll(versionLabel, mapView.getMapView(), sidePanel.getSidePanel(), toggleButton);
+        root.getChildren().add(loginView);
+        loginView.toFront(); // always keep login on top only when needed
+
 
         StackPane.setAlignment(sidePanel.getSidePanel(), Pos.CENTER_LEFT);
         StackPane.setAlignment(toggleButton, Pos.TOP_LEFT);
@@ -59,7 +62,7 @@ public class globeTrotterApp extends Application {
         toggleButton.setTranslateX(SPWidth - 25);
         toggleButton.setTranslateY(70);
 
-        new MainController(sidePanel, toggleButton, "home.png", root);
+        new MainController(sidePanel, toggleButton, "home.png", root, mapView);
 
 
         Scene scene = new Scene(root, 1280, 720);

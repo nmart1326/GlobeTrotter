@@ -10,8 +10,8 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("Student", "John", "Doe", "john.doe@test.com", "password123");
-        userWithId = new User(1, "Teacher", "Jane", "Smith", "jane.smith@test.com", "securePass");
+        user = new User("Student", "username", "John", "Doe", "john.doe@test.com", "password123");
+        userWithId = new User("Teacher", "janeuser", "Jane", "Smith", "jane.smith@test.com", "securePass");
     }
 
     @Test
@@ -50,6 +50,7 @@ class UserTest {
     void testSettersAndGetters() {
         user.setUserID(5);
         user.setUserType("Teacher");
+        user.setUsername("username");
         user.setFirstName("Johnny");
         user.setLastName("Doeson");
         user.setEmail("johnny@newdomain.com");
@@ -57,6 +58,7 @@ class UserTest {
 
         assertEquals(5, user.getUserID());
         assertEquals("Teacher", user.getUserType());
+        assertEquals("username", user.getUsername());
         assertEquals("Johnny", user.getFirstName());
         assertEquals("Doeson", user.getLastName());
         assertEquals("johnny@newdomain.com", user.getEmail());
@@ -66,17 +68,17 @@ class UserTest {
 
     @Test
     void testEquals() {
-        User user1 = new User(1, "Student", "Test", "User", "test@test.com", "pass");
-        User user2 = new User(1, "Teacher", "Different", "Name", "different@email.com", "differentPass");
-        User user3 = new User(2, "Student", "Test", "User", "test@test.com", "pass");
+        User user1 = new User("Student", "username", "Test", "User", "test@test.com", "pass");
+        User user2 = new User("Teacher", "teacheruser", "Different", "Name", "different@email.com", "differentPass");
+        User user3 = new User("Student", "studentuser", "Test", "User", "test@test.com", "pass");
 
         assertEquals(user1, user2);
 
         assertNotEquals(user1, user3);
 
-        assertNotEquals(user1, null);
+        assertNotEquals(null, user1);
 
-        assertNotEquals(user1, "string");
+        assertNotEquals("string", user1);
     }
 
     @Test

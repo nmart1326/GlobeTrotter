@@ -45,7 +45,7 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should add user and assign ID correctly")
     void testAddUser_ShouldAddUserAndAssignId() {
-        User user = new User("Student", "John", "Doe", "john@test.com", "password123");
+        User user = new User("Student", "username", "John", "Doe", "john@test.com", "password123");
 
         userDAO.addUser(user);
 
@@ -60,7 +60,7 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should update user correctly")
     void testUpdateUser_ShouldUpdateUserCorrectly() {
-        User user = new User("Student", "John", "Doe", "john@test.com", "password123");
+        User user = new User("Student", "username", "John", "Doe", "john@test.com", "password123");
         userDAO.addUser(user);
 
         user.setFirstName("Johnny");
@@ -75,7 +75,7 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should delete user correctly")
     void testDeleteUser_ShouldDeleteUserCorrectly() {
-        User user = new User("Student", "John", "Doe", "john@test.com", "password123");
+        User user = new User("Student", "username", "John", "Doe", "john@test.com", "password123");
         userDAO.addUser(user);
         int userId = user.getUserID();
 
@@ -88,7 +88,7 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should find user by email correctly")
     void testGetUserByEmail_ShouldFindUserCorrectly() {
-        User user = new User("Teacher", "Jane", "Smith", "jane@test.com", "password456");
+        User user = new User("Teacher", "usernamejane", "Jane", "Smith", "jane@test.com", "password456");
         userDAO.addUser(user);
 
         User found = userDAO.getUserByEmail("jane@test.com");
@@ -109,8 +109,8 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should get all users correctly")
     void testGetAllUsers_ShouldReturnAllUsers() {
-        User user1 = new User("Student", "John", "Doe", "john@test.com", "password123");
-        User user2 = new User("Teacher", "Jane", "Smith", "jane@test.com", "password456");
+        User user1 = new User("Student", "username", "John", "Doe", "john@test.com", "password123");
+        User user2 = new User("Teacher", "usernamejane", "Jane", "Smith", "jane@test.com", "password456");
 
         userDAO.addUser(user1);
         userDAO.addUser(user2);
@@ -129,8 +129,8 @@ class SqliteUserDAOTest {
     @Test
     @DisplayName("Should handle database constraints properly")
     void testDatabaseConstraints() {
-        User user1 = new User("Student", "John", "Doe", "john@test.com", "password123");
-        User user2 = new User("Teacher", "Jane", "Smith", "john@test.com", "password456");
+        User user1 = new User("Student", "username", "John", "Doe", "john@test.com", "password123");
+        User user2 = new User("Teacher", "usernamejane", "Jane", "Smith", "john@test.com", "password456");
 
         userDAO.addUser(user1);
 
